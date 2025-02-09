@@ -1,4 +1,4 @@
-package com.spring.book_management;
+package com.spring.book.management;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
