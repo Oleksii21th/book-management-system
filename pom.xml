@@ -82,7 +82,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <configLocation>../.idea/codeStyles/checkstyle.xml</configLocation>
+                    <configLocation>.idea/codeStyles/checkstyle.xml</configLocation>
                     <consoleOutput>true</consoleOutput>
                     <failsOnError>true</failsOnError>
                     <linkXRef>false</linkXRef>
