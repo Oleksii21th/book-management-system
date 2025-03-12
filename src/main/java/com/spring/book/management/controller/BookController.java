@@ -4,7 +4,6 @@ import com.spring.book.management.dto.BookDto;
 import com.spring.book.management.dto.CreateBookRequestDto;
 import com.spring.book.management.service.BookService;
 import java.util.List;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
