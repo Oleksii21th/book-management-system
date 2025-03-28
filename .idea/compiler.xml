@@ -6,11 +6,10 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="book-management-system" />
+        <module name="book-management" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="book-management" target="17" />
       <module name="book-management-system" target="17" />
     </bytecodeTargetLevel>
   </component>
