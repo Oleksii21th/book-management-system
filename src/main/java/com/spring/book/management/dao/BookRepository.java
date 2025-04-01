@@ -1,14 +1,9 @@
 package com.spring.book.management.dao;
 
 import com.spring.book.management.model.Book;
-import java.util.List;
-import java.util.Optional;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface BookRepository {
-
-    Book save(Book book);
-
-    Optional<Book> findById(Long id);
-
-    List<Book> findAll();
+@Repository
+public interface BookRepository extends JpaRepository<Book, Long> {
 }

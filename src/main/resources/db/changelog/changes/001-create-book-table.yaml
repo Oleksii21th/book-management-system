@@ -1,0 +1,48 @@
+databaseChangeLog:
+  - changeSet:
+      id: "1"
+      author: "Oleksii"
+      changes:
+        - createTable:
+            tableName: "books"
+            columns:
+              - column:
+                  name: "id"
+                  type: "BIGINT"
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: "title"
+                  type: "VARCHAR(255)"
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: "author"
+                  type: "VARCHAR(255)"
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: "isbn"
+                  type: "VARCHAR(20)"
+                  constraints:
+                    nullable: false
+                    unique: true
+
+              - column:
+                  name: "price"
+                  type: "DECIMAL(10,2)"
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: "description"
+                  type: "TEXT"
+
+              - column:
+                  name: "cover_image"
+                  type: "VARCHAR(255)"
