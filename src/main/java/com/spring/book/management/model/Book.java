@@ -8,10 +8,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 @Entity
+@SQLDelete(sql = "UPDATE books SET is_deleted = true WHERE id = ?")
+@Where(clause = "is_deleted = false")
 @Table(name = "books")
-@SQLDelete(sql = "UPDATE books SET deleted = true WHERE id = ?")
 public class Book {
 
     @Id
@@ -33,6 +35,9 @@ public class Book {
     private String description;
 
     private String coverImage;
+
+    @Column(nullable = false)
+    private boolean isDeleted = false;
 
     public Long getId() {
         return id;
