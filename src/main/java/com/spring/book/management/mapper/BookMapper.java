@@ -17,5 +17,5 @@ public interface BookMapper {
     Book toModel(CreateBookRequestDto createBookRequestDto);
 
     @Mapping(target = "id", ignore = true)
-    void mapToExistingEntity(CreateBookRequestDto dto, @MappingTarget Book book);
+    void toEntity(CreateBookRequestDto dto, @MappingTarget Book book);
 }
