@@ -7,7 +7,6 @@ import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
 
 public class CreateBookRequestDto {
-
     @NotBlank(message = "Title is required")
     private String title;
 
