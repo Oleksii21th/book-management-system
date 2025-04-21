@@ -12,6 +12,8 @@ import com.spring.book.management.service.BookService;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -49,8 +51,8 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<BookDto> findAll() {
-        List<Book> books = bookRepository.findAll();
+    public List<BookDto> findAll(Pageable pageable) {
+        Page<Book> books = bookRepository.findAll(pageable);
 
         return books.stream()
                 .map(bookMapper::toDto)
