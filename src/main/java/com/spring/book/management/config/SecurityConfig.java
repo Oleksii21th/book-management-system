@@ -2,6 +2,8 @@ package com.spring.book.management.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -17,8 +19,18 @@ public class SecurityConfig {
         http.authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers("/api/auth/registration").permitAll()
+                                .requestMatchers("/swagger-ui/**").permitAll()
+                                .requestMatchers(HttpMethod.GET,
+                                        "/api/books/**").hasRole("USER")
+                                .requestMatchers(HttpMethod.POST,
+                                        "/api/books").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.PUT,
+                                        "/api/books/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.DELETE,
+                                        "/api/books/**").hasRole("ADMIN")
                                 .anyRequest().authenticated())
-                .csrf(AbstractHttpConfigurer::disable);
+                .csrf(AbstractHttpConfigurer::disable)
+                .httpBasic(Customizer.withDefaults());
 
         return http.build();
     }
