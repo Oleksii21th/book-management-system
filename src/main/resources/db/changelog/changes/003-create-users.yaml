@@ -1,0 +1,57 @@
+databaseChangeLog:
+  - changeSet:
+      id: "3"
+      author: "Oleksii"
+      changes:
+        - createTable:
+            tableName: "users"
+            columns:
+              - column:
+                  name: "id"
+                  type: "BIGINT"
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: "email"
+                  type: "VARCHAR(255)"
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: "password"
+                  type: "VARCHAR(255)"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "first_name"
+                  type: "VARCHAR(255)"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "last_name"
+                  type: "VARCHAR(255)"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "shipping_address"
+                  type: "VARCHAR(255)"
+        - insert:
+            tableName: "users"
+            columns:
+              - column:
+                  name: "email"
+                  value: "admin@gmail.com"
+              - column:
+                  name: "password"
+                  value: "admin"
+              - column:
+                  name: "first_name"
+                  value: "Admin"
+              - column:
+                  name: "last_name"
+                  value: "Admin"
+              - column:
+                  name: "shipping_address"
+                  value: "Admin street"
