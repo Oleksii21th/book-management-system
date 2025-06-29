@@ -1,0 +1,58 @@
+package com.spring.book.management.service.impl;
+
+import com.spring.book.management.dto.CategoryDto;
+import com.spring.book.management.exception.EntityNotFoundException;
+import com.spring.book.management.mapper.CategoryMapper;
+import com.spring.book.management.model.Category;
+import com.spring.book.management.repository.category.CategoryRepository;
+import com.spring.book.management.service.CategoryService;
+import java.util.List;
+import java.util.stream.Collectors;
+import org.springframework.stereotype.Service;
+
+@Service
+public class CategoryServiceImpl implements CategoryService {
+    private final CategoryRepository categoryRepository;
+    private final CategoryMapper categoryMapper;
+
+    public CategoryServiceImpl(CategoryRepository categoryRepository,
+                               CategoryMapper categoryMapper) {
+        this.categoryRepository = categoryRepository;
+        this.categoryMapper = categoryMapper;
+    }
+
+    @Override
+    public List<CategoryDto> findAll() {
+        return categoryRepository.findAll()
+                .stream()
+                .map(categoryMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public CategoryDto getById(Long id) {
+        return categoryMapper.toDto(
+                categoryRepository.findById(id)
+                        .orElseThrow(() -> new EntityNotFoundException("Category not found"))
+        );
+    }
+
+    @Override
+    public CategoryDto save(CategoryDto dto) {
+        return categoryMapper.toDto(categoryRepository.save(categoryMapper.toEntity(dto)));
+    }
+
+    @Override
+    public CategoryDto update(Long id, CategoryDto dto) {
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Category not found"));
+        category.setName(dto.name());
+        category.setDescription(dto.description());
+        return categoryMapper.toDto(categoryRepository.save(category));
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        categoryRepository.deleteById(id);
+    }
+}
