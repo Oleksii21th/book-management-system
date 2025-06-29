@@ -24,7 +24,8 @@ public class AuthenticationService {
     public UserLoginResponseDto authenticateUser(UserLoginRequestDto request) {
         try {
             Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+                    new UsernamePasswordAuthenticationToken(
+                            request.getEmail(), request.getPassword()));
             String token = jwtUtil.generateToken(authentication);
             return new UserLoginResponseDto(token);
         } catch (BadCredentialsException ex) {
