@@ -1,13 +1,13 @@
 package com.spring.book.management.dto;
 
 public class UserLoginResponseDto {
-    private final String jwtToken;
+    private final String token;
 
-    public UserLoginResponseDto(String jwtToken) {
-        this.jwtToken = jwtToken;
+    public UserLoginResponseDto(String token) {
+        this.token = token;
     }
 
     public String getToken() {
-        return jwtToken;
+        return token;
     }
 }

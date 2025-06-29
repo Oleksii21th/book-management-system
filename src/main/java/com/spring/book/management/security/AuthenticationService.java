@@ -2,7 +2,9 @@ package com.spring.book.management.security;
 
 import com.spring.book.management.dto.UserLoginRequestDto;
 import com.spring.book.management.dto.UserLoginResponseDto;
+import com.spring.book.management.exception.LoginException;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -20,10 +22,13 @@ public class AuthenticationService {
     }
 
     public UserLoginResponseDto authenticateUser(UserLoginRequestDto request) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getUsername(),
-                        request.getPassword()));
-        String token = jwtUtil.generateToken(authentication);
-        return new UserLoginResponseDto(token);
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+            String token = jwtUtil.generateToken(authentication);
+            return new UserLoginResponseDto(token);
+        } catch (BadCredentialsException ex) {
+            throw new LoginException("Nieprawidłowy login lub hasło");
+        }
     }
 }

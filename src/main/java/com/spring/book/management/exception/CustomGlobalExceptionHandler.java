@@ -53,4 +53,13 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         body.put("errors", List.of(ex.getMessage()));
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(LoginException.class)
+    protected ResponseEntity<Object> handleLoginException(LoginException ex) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("statusCode", HttpStatus.UNAUTHORIZED.value());
+        body.put("errors", List.of(ex.getMessage()));
+        return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
+    }
 }
