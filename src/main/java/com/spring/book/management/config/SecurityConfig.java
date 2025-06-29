@@ -33,13 +33,13 @@ public class SecurityConfig {
                                         "/api/auth/login").permitAll()
                                 .requestMatchers("/swagger-ui/**").permitAll()
                                 .requestMatchers(HttpMethod.GET,
-                                        "/api/books/**").hasRole("USER")
+                                        "/api/books/**", "/api/categories/**").hasRole("USER")
                                 .requestMatchers(HttpMethod.POST,
-                                        "/api/books").hasRole("ADMIN")
+                                        "/api/books", "api/categories").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.PUT,
-                                        "/api/books/**").hasRole("ADMIN")
+                                        "/api/books/**", "/api/categories/**").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.DELETE,
-                                        "/api/books/**").hasRole("ADMIN")
+                                        "/api/books/**", "/api/categories/**").hasRole("ADMIN")
                                 .anyRequest().authenticated())
                 .csrf(AbstractHttpConfigurer::disable)
                 .addFilterBefore(jwtAuthenticationFilter,
