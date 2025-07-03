@@ -6,11 +6,15 @@ import com.spring.book.management.dto.CreateBookRequestDto;
 import com.spring.book.management.exception.EntityNotFoundException;
 import com.spring.book.management.mapper.BookMapper;
 import com.spring.book.management.model.Book;
+import com.spring.book.management.model.Category;
 import com.spring.book.management.repository.book.BookRepository;
 import com.spring.book.management.repository.book.BookSpecificationBuilder;
+import com.spring.book.management.repository.category.CategoryRepository;
 import com.spring.book.management.service.BookService;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,22 +25,30 @@ import org.springframework.stereotype.Service;
 public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
+    private final CategoryRepository categoryRepository;
     private final BookMapper bookMapper;
     private final BookSpecificationBuilder bookSpecificationBuilder;
 
     public BookServiceImpl(BookRepository bookRepository,
+                           CategoryRepository categoryRepository,
                            BookMapper bookMapper,
                            BookSpecificationBuilder bookSpecificationBuilder) {
         this.bookRepository = bookRepository;
+        this.categoryRepository = categoryRepository;
         this.bookMapper = bookMapper;
         this.bookSpecificationBuilder = bookSpecificationBuilder;
     }
 
-    @Override
-    public BookDto save(CreateBookRequestDto createBookRequestDto) {
-        Book book = bookMapper.toModel(createBookRequestDto);
-        Book savedBook = bookRepository.save(book);
+    public BookDto save(CreateBookRequestDto dto) {
+        Book book = bookMapper.toModel(dto);
 
+        if (dto.getCategoryIds() != null && !dto.getCategoryIds().isEmpty()) {
+            Set<Category> categories =
+                    new HashSet<>(categoryRepository.findAllById(dto.getCategoryIds()));
+            book.setCategories(categories);
+        }
+
+        Book savedBook = bookRepository.save(book);
         return bookMapper.toDto(savedBook);
     }
 
@@ -59,15 +71,19 @@ public class BookServiceImpl implements BookService {
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public BookDto updateBook(Long id, CreateBookRequestDto updatedBook) {
+    public BookDto updateBook(Long id, CreateBookRequestDto dto) {
         Book book = bookRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(id));
+                .orElseThrow(() -> new EntityNotFoundException("Book not found"));
+        bookMapper.toEntity(dto, book);
 
-        bookMapper.toEntity(updatedBook, book);
-        Book savedBook = bookRepository.save(book);
+        if (dto.getCategoryIds() != null) {
+            Set<Category> categories =
+                    new HashSet<>(categoryRepository.findAllById(dto.getCategoryIds()));
+            book.setCategories(categories);
+        }
 
-        return bookMapper.toDto(savedBook);
+        Book updatedBook = bookRepository.save(book);
+        return bookMapper.toDto(updatedBook);
     }
 
     @Override
