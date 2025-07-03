@@ -21,9 +21,10 @@ public class SecurityConfig {
                                 .requestMatchers("/api/auth/registration").permitAll()
                                 .requestMatchers("/swagger-ui/**").permitAll()
                                 .requestMatchers(HttpMethod.GET,
-                                        "/api/books/**", "/api/categories/**").hasRole("USER")
+                                        "/api/books/**", "/api/categories/**")
+                                .hasAnyRole("USER", "ADMIN")
                                 .requestMatchers(HttpMethod.POST,
-                                        "/api/books", "api/categories").hasRole("ADMIN")
+                                        "/api/books", "/api/categories").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.PUT,
                                         "/api/books/**", "/api/categories/**").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.DELETE,

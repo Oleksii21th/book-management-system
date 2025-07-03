@@ -11,4 +11,4 @@ databaseChangeLog:
                   valueNumeric: 1
               - column:
                   name: "role_id"
-                  valueComputed: (SELECT id FROM roles WHERE name = 'ADMIN')
+                  valueNumeric: 2

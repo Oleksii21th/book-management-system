@@ -1,9 +1,13 @@
 package com.spring.book.management.service.impl;
 
+import com.spring.book.management.dto.BookDtoWithoutCategoryIds;
 import com.spring.book.management.dto.CategoryDto;
+import com.spring.book.management.exception.CategoryNotFoundException;
 import com.spring.book.management.exception.EntityNotFoundException;
+import com.spring.book.management.mapper.BookMapper;
 import com.spring.book.management.mapper.CategoryMapper;
 import com.spring.book.management.model.Category;
+import com.spring.book.management.repository.book.BookRepository;
 import com.spring.book.management.repository.category.CategoryRepository;
 import com.spring.book.management.service.CategoryService;
 import java.util.List;
@@ -14,11 +18,17 @@ import org.springframework.stereotype.Service;
 public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
+    private final BookRepository bookRepository;
+    private final BookMapper bookMapper;
 
     public CategoryServiceImpl(CategoryRepository categoryRepository,
-                               CategoryMapper categoryMapper) {
+                               CategoryMapper categoryMapper,
+                               BookRepository bookRepository,
+                               BookMapper bookMapper) {
         this.categoryRepository = categoryRepository;
         this.categoryMapper = categoryMapper;
+        this.bookRepository = bookRepository;
+        this.bookMapper = bookMapper;
     }
 
     @Override
@@ -54,5 +64,15 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void deleteById(Long id) {
         categoryRepository.deleteById(id);
+    }
+
+    @Override
+    public List<BookDtoWithoutCategoryIds> getBooksByCategoryId(Long categoryId) {
+        if (!categoryRepository.existsById(categoryId)) {
+            throw new CategoryNotFoundException(categoryId);
+        }
+        return bookRepository.findByCategories_Id(categoryId).stream()
+                .map(bookMapper::toDtoWithoutCategories)
+                .collect(Collectors.toList());
     }
 }
