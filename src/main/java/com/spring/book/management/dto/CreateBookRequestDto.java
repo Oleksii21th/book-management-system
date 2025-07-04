@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
+import java.util.Set;
 
 public class CreateBookRequestDto {
     @NotBlank(message = "Title is required")
@@ -24,6 +25,8 @@ public class CreateBookRequestDto {
     private String description;
 
     private String coverImage;
+
+    private Set<Long> categoryIds;
 
     public CreateBookRequestDto(String title, String author,
                                 String isbn, BigDecimal price,
@@ -82,5 +85,13 @@ public class CreateBookRequestDto {
 
     public void setCoverImage(String coverImage) {
         this.coverImage = coverImage;
+    }
+
+    public Set<Long> getCategoryIds() {
+        return categoryIds;
+    }
+
+    public void setCategoryIds(Set<Long> categoryIds) {
+        this.categoryIds = categoryIds;
     }
 }

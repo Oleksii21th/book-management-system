@@ -9,7 +9,6 @@ import org.mapstruct.Mapping;
 
 @Mapper(config = MapperConfig.class)
 public interface UserMapper {
-
     UserResponseDto toDto(User user);
 
     @Mapping(target = "id", ignore = true)

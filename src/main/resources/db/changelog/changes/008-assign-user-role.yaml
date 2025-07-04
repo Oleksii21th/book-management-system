@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 7
+      id: "8"
       author: Oleksii
       changes:
         - insert:
@@ -11,4 +11,4 @@ databaseChangeLog:
                   valueNumeric: 2
               - column:
                   name: role_id
-                  valueComputed: (SELECT id FROM roles WHERE name = 'USER')
+                  valueComputed: 1
