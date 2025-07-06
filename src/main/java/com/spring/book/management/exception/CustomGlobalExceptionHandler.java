@@ -68,4 +68,9 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
     public ResponseEntity<String> handleCategoryNotFoundException(CategoryNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
+
+    @ExceptionHandler(CartItemNotFoundException.class)
+    public ResponseEntity<String> handleCartItemNotFoundException(CartItemNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
 }

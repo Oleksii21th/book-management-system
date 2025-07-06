@@ -10,6 +10,9 @@ import com.spring.book.management.repository.role.RoleRepository;
 import com.spring.book.management.repository.user.UserRepository;
 import com.spring.book.management.service.UserService;
 import java.util.Collections;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -44,5 +47,15 @@ public class UserServiceImpl implements UserService {
         user.setRoles(Collections.singleton(userRole));
         User savedUser = userRepository.save(user);
         return userMapper.toDto(savedUser);
+    }
+
+    @Override
+    public User getCurrentUser() {
+        Authentication authentication =
+                SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        return userRepository.findByEmail(email)
+                .orElseThrow(() ->
+                        new UsernameNotFoundException("User not found: " + email));
     }
 }
