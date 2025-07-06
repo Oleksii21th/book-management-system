@@ -37,6 +37,21 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         return new ResponseEntity<>(body, headers, status);
     }
 
+    @ExceptionHandler({RegistrationException.class})
+    protected ResponseEntity<Object> handleRegistration(RegistrationException ex) {
+        return buildErrorResponse(ex, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({LoginException.class})
+    protected ResponseEntity<Object> handleLoginException(LoginException ex) {
+        return buildErrorResponse(ex, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler({CategoryNotFoundException.class, CartItemNotFoundException.class})
+    public ResponseEntity<Object> handleNotFoundExceptions(RuntimeException ex) {
+        return buildErrorResponse(ex, HttpStatus.NOT_FOUND);
+    }
+
     private String getErrorMessage(ObjectError objectError) {
         if (objectError instanceof FieldError fieldError) {
             String field = fieldError.getField();
@@ -46,31 +61,11 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         return objectError.getDefaultMessage();
     }
 
-    @ExceptionHandler(RegistrationException.class)
-    protected ResponseEntity<Object> handleRegistration(RegistrationException ex) {
+    private ResponseEntity<Object> buildErrorResponse(Exception ex, HttpStatus status) {
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());
-        body.put("statusCode", HttpStatus.BAD_REQUEST.value());
+        body.put("statusCode", status.value());
         body.put("errors", List.of(ex.getMessage()));
-        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(LoginException.class)
-    protected ResponseEntity<Object> handleLoginException(LoginException ex) {
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("statusCode", HttpStatus.UNAUTHORIZED.value());
-        body.put("errors", List.of(ex.getMessage()));
-        return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
-    }
-
-    @ExceptionHandler(CategoryNotFoundException.class)
-    public ResponseEntity<String> handleCategoryNotFoundException(CategoryNotFoundException ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
-    }
-
-    @ExceptionHandler(CartItemNotFoundException.class)
-    public ResponseEntity<String> handleCartItemNotFoundException(CartItemNotFoundException ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        return new ResponseEntity<>(body, status);
     }
 }

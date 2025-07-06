@@ -41,17 +41,15 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public ShoppingCartResponseDto getCartForCurrentUser() {
-        User user = userService.getCurrentUser();
-        ShoppingCart cart = shoppingCartRepository.findByUser(user)
-                .orElseGet(() -> shoppingCartRepository.save(new ShoppingCart(user)));
+        User user = getCurrentUser();
+        ShoppingCart cart = getOrCreateCartForUser(user);
         return cartMapper.toDto(cart);
     }
 
     @Override
     public ShoppingCartResponseDto addToCart(AddToCartRequestDto dto) {
-        User user = userService.getCurrentUser();
-        ShoppingCart cart = shoppingCartRepository.findByUser(user)
-                .orElseGet(() -> shoppingCartRepository.save(new ShoppingCart(user)));
+        User user = getCurrentUser();
+        ShoppingCart cart = getOrCreateCartForUser(user);
 
         Book book = bookRepository.findById(dto.bookId())
                 .orElseThrow(() -> new EntityNotFoundException("Book not found"));
@@ -77,8 +75,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public ShoppingCartResponseDto updateCartItem(Long cartItemId, UpdateCartItemRequestDto dto) {
-        CartItem item = cartItemRepository.findById(cartItemId)
-                .orElseThrow(() -> new CartItemNotFoundException(cartItemId));
+        CartItem item = getCartItemById(cartItemId);
         item.setQuantity(dto.quantity());
         cartItemRepository.save(item);
         return cartMapper.toDto(item.getShoppingCart());
@@ -86,8 +83,21 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void removeCartItem(Long cartItemId) {
-        CartItem item = cartItemRepository.findById(cartItemId)
-                .orElseThrow(() -> new CartItemNotFoundException(cartItemId));
+        CartItem item = getCartItemById(cartItemId);
         cartItemRepository.delete(item);
+    }
+
+    private User getCurrentUser() {
+        return userService.getCurrentUser();
+    }
+
+    private CartItem getCartItemById(Long cartItemId) {
+        return cartItemRepository.findById(cartItemId)
+                .orElseThrow(() -> new CartItemNotFoundException(cartItemId));
+    }
+
+    private ShoppingCart getOrCreateCartForUser(User user) {
+        return shoppingCartRepository.findByUser(user)
+                .orElseGet(() -> shoppingCartRepository.save(new ShoppingCart(user)));
     }
 }
