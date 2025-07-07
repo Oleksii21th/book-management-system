@@ -41,6 +41,8 @@ public class SecurityConfig {
                                         "/api/books/**", "/api/categories/**").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.DELETE,
                                         "/api/books/**", "/api/categories/**").hasRole("ADMIN")
+                                .requestMatchers("/api/cart/**")
+                                .hasAnyRole("USER", "ADMIN")
                                 .anyRequest().authenticated())
                 .csrf(AbstractHttpConfigurer::disable)
                 .addFilterBefore(jwtAuthenticationFilter,
