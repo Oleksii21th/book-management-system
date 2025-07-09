@@ -1,4 +1,4 @@
-package com.spring.book.management.dto;
+package com.spring.book.management.dto.book;
 
 import java.math.BigDecimal;
 

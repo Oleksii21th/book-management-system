@@ -1,8 +1,8 @@
 package com.spring.book.management.controller;
 
-import com.spring.book.management.dto.AddToCartRequestDto;
-import com.spring.book.management.dto.ShoppingCartResponseDto;
-import com.spring.book.management.dto.UpdateCartItemRequestDto;
+import com.spring.book.management.dto.shoppingcart.AddToCartRequestDto;
+import com.spring.book.management.dto.shoppingcart.ShoppingCartResponseDto;
+import com.spring.book.management.dto.shoppingcart.UpdateCartItemRequestDto;
 import com.spring.book.management.service.ShoppingCartService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;

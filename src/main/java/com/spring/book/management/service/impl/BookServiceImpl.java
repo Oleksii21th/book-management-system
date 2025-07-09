@@ -1,9 +1,9 @@
 package com.spring.book.management.service.impl;
 
-import com.spring.book.management.dto.BookDto;
-import com.spring.book.management.dto.BookSearchParametersDto;
-import com.spring.book.management.dto.CreateBookRequestDto;
-import com.spring.book.management.exception.EntityNotFoundException;
+import com.spring.book.management.dto.book.BookDto;
+import com.spring.book.management.dto.book.BookSearchParametersDto;
+import com.spring.book.management.dto.book.CreateBookRequestDto;
+import com.spring.book.management.exception.BookNotFoundException;
 import com.spring.book.management.mapper.BookMapper;
 import com.spring.book.management.model.Book;
 import com.spring.book.management.model.Category;
@@ -56,7 +56,7 @@ public class BookServiceImpl implements BookService {
     public BookDto findById(Long id) {
         Optional<Book> bookOptional = bookRepository.findById(id);
         if (bookOptional.isEmpty()) {
-            throw new EntityNotFoundException(id);
+            throw new BookNotFoundException(id);
         }
 
         return bookOptional.map(bookMapper::toDto).orElse(null);
@@ -73,7 +73,7 @@ public class BookServiceImpl implements BookService {
 
     public BookDto updateBook(Long id, CreateBookRequestDto dto) {
         Book book = bookRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Book not found"));
+                .orElseThrow(() -> new BookNotFoundException("Book not found"));
         bookMapper.toEntity(dto, book);
 
         if (dto.getCategoryIds() != null) {

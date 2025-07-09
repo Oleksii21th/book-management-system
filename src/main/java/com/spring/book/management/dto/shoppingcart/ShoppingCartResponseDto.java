@@ -1,4 +1,4 @@
-package com.spring.book.management.dto;
+package com.spring.book.management.dto.shoppingcart;
 
 import java.util.List;
 

@@ -1,7 +1,7 @@
 package com.spring.book.management.security;
 
-import com.spring.book.management.dto.UserLoginRequestDto;
-import com.spring.book.management.dto.UserLoginResponseDto;
+import com.spring.book.management.dto.user.UserLoginRequestDto;
+import com.spring.book.management.dto.user.UserLoginResponseDto;
 import com.spring.book.management.exception.LoginException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;

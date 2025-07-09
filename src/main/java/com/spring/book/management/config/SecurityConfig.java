@@ -43,6 +43,12 @@ public class SecurityConfig {
                                         "/api/books/**", "/api/categories/**").hasRole("ADMIN")
                                 .requestMatchers("/api/cart/**")
                                 .hasAnyRole("USER", "ADMIN")
+                                .requestMatchers(HttpMethod.GET,
+                                        "/api/orders/**").hasAnyRole("USER", "ADMIN")
+                                .requestMatchers(HttpMethod.POST,
+                                        "/api/orders").hasAnyRole("USER", "ADMIN")
+                                .requestMatchers(HttpMethod.PATCH,
+                                        "/api/orders/**").hasRole("ADMIN")
                                 .anyRequest().authenticated())
                 .csrf(AbstractHttpConfigurer::disable)
                 .addFilterBefore(jwtAuthenticationFilter,

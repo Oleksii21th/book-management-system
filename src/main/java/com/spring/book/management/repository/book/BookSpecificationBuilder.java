@@ -1,6 +1,6 @@
 package com.spring.book.management.repository.book;
 
-import com.spring.book.management.dto.BookSearchParametersDto;
+import com.spring.book.management.dto.book.BookSearchParametersDto;
 import com.spring.book.management.model.Book;
 import com.spring.book.management.repository.SpecificationProviderManager;
 import java.util.Arrays;

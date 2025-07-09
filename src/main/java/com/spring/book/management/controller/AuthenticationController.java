@@ -1,9 +1,9 @@
 package com.spring.book.management.controller;
 
-import com.spring.book.management.dto.UserLoginRequestDto;
-import com.spring.book.management.dto.UserLoginResponseDto;
-import com.spring.book.management.dto.UserRegistrationRequestDto;
-import com.spring.book.management.dto.UserResponseDto;
+import com.spring.book.management.dto.user.UserLoginRequestDto;
+import com.spring.book.management.dto.user.UserLoginResponseDto;
+import com.spring.book.management.dto.user.UserRegistrationRequestDto;
+import com.spring.book.management.dto.user.UserResponseDto;
 import com.spring.book.management.security.AuthenticationService;
 import com.spring.book.management.service.UserService;
 import jakarta.validation.Valid;
