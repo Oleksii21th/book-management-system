@@ -1,42 +1,28 @@
-package com.spring.book.management.dto;
+package com.spring.book.management.dto.book;
 
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.Set;
 
-public class CreateBookRequestDto {
-    @NotBlank(message = "Title is required")
+public class BookDto {
+    private Long id;
     private String title;
-
-    @NotBlank(message = "Author is required")
     private String author;
-
-    @NotBlank(message = "ISBN is required")
     private String isbn;
-
-    @NotNull(message = "Price is required")
-    @DecimalMin(value = "0.0", inclusive = false, message = "Price must be greater than 0")
     private BigDecimal price;
-
-    @Size(max = 1000, message = "Description can be up to 1000 characters")
     private String description;
-
     private String coverImage;
+    private Set<Long> categoryIds = new HashSet<>();
 
-    private Set<Long> categoryIds;
+    public BookDto() {
+    }
 
-    public CreateBookRequestDto(String title, String author,
-                                String isbn, BigDecimal price,
-                                String description, String coverImage) {
-        this.title = title;
-        this.author = author;
-        this.isbn = isbn;
-        this.price = price;
-        this.description = description;
-        this.coverImage = coverImage;
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getTitle() {

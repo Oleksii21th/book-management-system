@@ -1,8 +1,8 @@
 package com.spring.book.management.mapper;
 
 import com.spring.book.management.config.MapperConfig;
-import com.spring.book.management.dto.UserRegistrationRequestDto;
-import com.spring.book.management.dto.UserResponseDto;
+import com.spring.book.management.dto.user.UserRegistrationRequestDto;
+import com.spring.book.management.dto.user.UserResponseDto;
 import com.spring.book.management.model.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

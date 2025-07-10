@@ -1,10 +1,10 @@
 package com.spring.book.management.service.impl;
 
-import com.spring.book.management.dto.AddToCartRequestDto;
-import com.spring.book.management.dto.ShoppingCartResponseDto;
-import com.spring.book.management.dto.UpdateCartItemRequestDto;
+import com.spring.book.management.dto.shoppingcart.AddToCartRequestDto;
+import com.spring.book.management.dto.shoppingcart.ShoppingCartResponseDto;
+import com.spring.book.management.dto.shoppingcart.UpdateCartItemRequestDto;
+import com.spring.book.management.exception.BookNotFoundException;
 import com.spring.book.management.exception.CartItemNotFoundException;
-import com.spring.book.management.exception.EntityNotFoundException;
 import com.spring.book.management.mapper.ShoppingCartMapper;
 import com.spring.book.management.model.Book;
 import com.spring.book.management.model.CartItem;
@@ -52,7 +52,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         ShoppingCart cart = getOrCreateCartForUser(user);
 
         Book book = bookRepository.findById(dto.bookId())
-                .orElseThrow(() -> new EntityNotFoundException("Book not found"));
+                .orElseThrow(() -> new BookNotFoundException("Book not found"));
 
         Optional<CartItem> existingItem = cart.getCartItems().stream()
                 .filter(item -> item.getBook().getId().equals(dto.bookId()))

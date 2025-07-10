@@ -1,7 +1,7 @@
 package com.spring.book.management.service.impl;
 
-import com.spring.book.management.dto.UserRegistrationRequestDto;
-import com.spring.book.management.dto.UserResponseDto;
+import com.spring.book.management.dto.user.UserRegistrationRequestDto;
+import com.spring.book.management.dto.user.UserResponseDto;
 import com.spring.book.management.exception.RegistrationException;
 import com.spring.book.management.mapper.UserMapper;
 import com.spring.book.management.model.Role;

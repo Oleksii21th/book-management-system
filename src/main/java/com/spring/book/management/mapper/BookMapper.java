@@ -1,9 +1,9 @@
 package com.spring.book.management.mapper;
 
 import com.spring.book.management.config.MapperConfig;
-import com.spring.book.management.dto.BookDto;
-import com.spring.book.management.dto.BookDtoWithoutCategoryIds;
-import com.spring.book.management.dto.CreateBookRequestDto;
+import com.spring.book.management.dto.book.BookDto;
+import com.spring.book.management.dto.book.BookDtoWithoutCategoryIds;
+import com.spring.book.management.dto.book.CreateBookRequestDto;
 import com.spring.book.management.model.Book;
 import com.spring.book.management.model.Category;
 import java.util.stream.Collectors;

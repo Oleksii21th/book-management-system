@@ -1,9 +1,8 @@
 package com.spring.book.management.service.impl;
 
-import com.spring.book.management.dto.BookDtoWithoutCategoryIds;
 import com.spring.book.management.dto.CategoryDto;
+import com.spring.book.management.dto.book.BookDtoWithoutCategoryIds;
 import com.spring.book.management.exception.CategoryNotFoundException;
-import com.spring.book.management.exception.EntityNotFoundException;
 import com.spring.book.management.mapper.BookMapper;
 import com.spring.book.management.mapper.CategoryMapper;
 import com.spring.book.management.model.Category;
@@ -43,8 +42,7 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryDto getById(Long id) {
         return categoryMapper.toDto(
                 categoryRepository.findById(id)
-                        .orElseThrow(() -> new EntityNotFoundException("Category not found"))
-        );
+                        .orElseThrow(CategoryNotFoundException::new));
     }
 
     @Override
@@ -55,7 +53,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryDto update(Long id, CategoryDto dto) {
         Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Category not found"));
+                .orElseThrow(CategoryNotFoundException::new);
         category.setName(dto.name());
         category.setDescription(dto.description());
         return categoryMapper.toDto(categoryRepository.save(category));

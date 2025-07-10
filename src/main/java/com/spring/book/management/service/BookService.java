@@ -1,8 +1,8 @@
 package com.spring.book.management.service;
 
-import com.spring.book.management.dto.BookDto;
-import com.spring.book.management.dto.BookSearchParametersDto;
-import com.spring.book.management.dto.CreateBookRequestDto;
+import com.spring.book.management.dto.book.BookDto;
+import com.spring.book.management.dto.book.BookSearchParametersDto;
+import com.spring.book.management.dto.book.CreateBookRequestDto;
 import java.util.List;
 import org.springframework.data.domain.Pageable;
 

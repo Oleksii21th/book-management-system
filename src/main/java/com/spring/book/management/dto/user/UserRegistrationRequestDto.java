@@ -1,4 +1,4 @@
-package com.spring.book.management.dto;
+package com.spring.book.management.dto.user;
 
 import com.spring.book.management.validation.PasswordsMatch;
 import jakarta.validation.constraints.Email;

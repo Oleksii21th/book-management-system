@@ -1,7 +1,7 @@
 package com.spring.book.management.service;
 
-import com.spring.book.management.dto.BookDtoWithoutCategoryIds;
 import com.spring.book.management.dto.CategoryDto;
+import com.spring.book.management.dto.book.BookDtoWithoutCategoryIds;
 import java.util.List;
 
 public interface CategoryService {

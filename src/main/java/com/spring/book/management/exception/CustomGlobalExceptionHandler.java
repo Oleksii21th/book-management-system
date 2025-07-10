@@ -47,7 +47,11 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         return buildErrorResponse(ex, HttpStatus.UNAUTHORIZED);
     }
 
-    @ExceptionHandler({CategoryNotFoundException.class, CartItemNotFoundException.class})
+    @ExceptionHandler({BookNotFoundException.class,
+            CategoryNotFoundException.class,
+            CartItemNotFoundException.class,
+            OrderItemNotFoundException.class,
+            ShoppingCartNotFoundException.class})
     public ResponseEntity<Object> handleNotFoundExceptions(RuntimeException ex) {
         return buildErrorResponse(ex, HttpStatus.NOT_FOUND);
     }

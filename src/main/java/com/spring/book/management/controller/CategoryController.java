@@ -1,7 +1,7 @@
 package com.spring.book.management.controller;
 
-import com.spring.book.management.dto.BookDtoWithoutCategoryIds;
 import com.spring.book.management.dto.CategoryDto;
+import com.spring.book.management.dto.book.BookDtoWithoutCategoryIds;
 import com.spring.book.management.service.CategoryService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;

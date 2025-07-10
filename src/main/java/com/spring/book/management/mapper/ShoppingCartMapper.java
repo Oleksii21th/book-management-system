@@ -1,8 +1,8 @@
 package com.spring.book.management.mapper;
 
 import com.spring.book.management.config.MapperConfig;
-import com.spring.book.management.dto.CartItemResponseDto;
-import com.spring.book.management.dto.ShoppingCartResponseDto;
+import com.spring.book.management.dto.shoppingcart.CartItemResponseDto;
+import com.spring.book.management.dto.shoppingcart.ShoppingCartResponseDto;
 import com.spring.book.management.model.CartItem;
 import com.spring.book.management.model.ShoppingCart;
 import org.mapstruct.Mapper;
