@@ -30,6 +30,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -71,6 +72,26 @@ class BookServiceTest {
         assertNotNull(savedBookDto);
         verify(bookRepository, times(1)).save(book);
         verify(categoryRepository).findAllById(Set.of(1L));
+    }
+
+    @Test
+    @DisplayName("Saves book when categoryIds is null")
+    void save_NullCategoryIds_SavesBook() {
+        CreateBookRequestDto dto = createBookRequestDto();
+        dto.setCategoryIds(null);
+        Book book = new Book();
+        Book savedBook = new Book();
+        BookDto bookDto = new BookDto();
+
+        when(bookMapper.toModel(dto)).thenReturn(book);
+        when(bookRepository.save(book)).thenReturn(savedBook);
+        when(bookMapper.toDto(savedBook)).thenReturn(bookDto);
+
+        BookDto result = bookService.save(dto);
+
+        assertNotNull(result);
+        verify(bookRepository).save(book);
+        verify(categoryRepository, times(0)).findAllById(any());
     }
 
     @Test
@@ -131,11 +152,30 @@ class BookServiceTest {
         Book updatedBook = new Book();
         BookDto updatedDto = new BookDto();
 
-        when(bookRepository.findById(bookId)).thenReturn(Optional.of(book));
-        doNothing().when(bookMapper).toEntity(dto, book);
         when(categoryRepository.findAllById(dto.getCategoryIds())).thenReturn(List.of(new Category()));
-        when(bookRepository.save(book)).thenReturn(updatedBook);
-        when(bookMapper.toDto(updatedBook)).thenReturn(updatedDto);
+        mockUpdatedBook(dto, book, updatedBook, updatedDto);
+
+        // when
+        BookDto result = bookService.updateBook(bookId, dto);
+
+        // then
+        assertNotNull(result);
+        verify(bookRepository).save(book);
+    }
+
+    @Test
+    @DisplayName("Updates an existing book without category")
+    void updateBook_NullCategoryIds_UpdatesAndReturnsBookDto() {
+        // given
+        Long bookId = 1L;
+        CreateBookRequestDto dto = createBookRequestDto();
+        dto.setCategoryIds(null);
+
+        Book book = new Book();
+        Book updatedBook = new Book();
+        BookDto updatedDto = new BookDto();
+
+        mockUpdatedBook(dto, book, updatedBook, updatedDto);
 
         // when
         BookDto result = bookService.updateBook(bookId, dto);
@@ -192,5 +232,15 @@ class BookServiceTest {
                 null);
         dto.setCategoryIds(Set.of(1L));
         return dto;
+    }
+
+    private void mockUpdatedBook(CreateBookRequestDto dto,
+                                Book book,
+                                Book updatedBook,
+                                BookDto updatedDto) {
+        when(bookRepository.findById(1L)).thenReturn(Optional.of(book));
+        doNothing().when(bookMapper).toEntity(dto, book);
+        when(bookRepository.save(book)).thenReturn(updatedBook);
+        when(bookMapper.toDto(updatedBook)).thenReturn(updatedDto);
     }
 }
