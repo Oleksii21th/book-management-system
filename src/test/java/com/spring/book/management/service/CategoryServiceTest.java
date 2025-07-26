@@ -69,11 +69,11 @@ class CategoryServiceTest {
 
     @Test
     @DisplayName("Returns category by ID")
-    void getById_ExistingId_ReturnsCategoryDto() {
+    void findById_ExistingId_ReturnsCategoryDto() {
         when(categoryRepository.findById(1L)).thenReturn(Optional.of(category));
         when(categoryMapper.toDto(category)).thenReturn(categoryDto);
 
-        CategoryDto result = categoryService.getById(1L);
+        CategoryDto result = categoryService.findById(1L);
 
         assertThat(result).isEqualTo(categoryDto);
         verify(categoryRepository).findById(1L);
@@ -81,11 +81,11 @@ class CategoryServiceTest {
 
     @Test
     @DisplayName("Throws CategoryNotFoundException if ID not found")
-    void getById_NonExistingId_ThrowsException() {
+    void findById_NonExistingId_ThrowsException() {
         when(categoryRepository.findById(99L)).thenReturn(Optional.empty());
 
         assertThrows(CategoryNotFoundException.class,
-                () -> categoryService.getById(99L));
+                () -> categoryService.findById(99L));
         verify(categoryRepository).findById(99L);
     }
 
@@ -133,9 +133,13 @@ class CategoryServiceTest {
     @Test
     @DisplayName("Deletes category by ID")
     void deleteById_ValidId_DeletesCategory() {
-        categoryService.deleteById(1L);
+        Long categoryId = 1L;
+        when(categoryRepository.existsById(categoryId)).thenReturn(true);
 
-        verify(categoryRepository).deleteById(1L);
+        categoryService.deleteById(categoryId);
+
+        verify(categoryRepository).existsById(categoryId);
+        verify(categoryRepository).deleteById(categoryId);
     }
 
     @Test

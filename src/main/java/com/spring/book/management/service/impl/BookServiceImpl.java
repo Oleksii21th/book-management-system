@@ -77,6 +77,9 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void deleteBook(Long id) {
+        if (!bookRepository.existsById(id)) {
+            throw new BookNotFoundException("Book not found with id: " + id);
+        }
         bookRepository.deleteById(id);
     }
 

@@ -77,7 +77,7 @@ public class CategoryControllerTest {
 
     @Test
     @WithMockUser(roles = {"USER"})
-    void getAllCategories_ReturnsList() throws Exception {
+    void findAllCategories_ReturnsList() throws Exception {
         MvcResult result = mockMvc.perform(get("/api/categories")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -92,8 +92,15 @@ public class CategoryControllerTest {
     }
 
     @Test
+    void findAllCategories_Unauthenticated_ReturnsUnauthorized() throws Exception {
+        mockMvc.perform(get("/api/categories")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
     @WithMockUser(roles = {"USER"})
-    void getCategoryById_ReturnsCategory() throws Exception {
+    void findCategoryById_ReturnsCategory() throws Exception {
         MvcResult result = mockMvc.perform(get("/api/categories/2")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -103,6 +110,14 @@ public class CategoryControllerTest {
                 result.getResponse().getContentAsString(), CategoryDto.class);
 
         assertThat(category.id()).isEqualTo(2L);
+    }
+
+    @Test
+    @WithMockUser(roles = {"USER"})
+    void findCategoryById_NonExistentId_ReturnsNotFound() throws Exception {
+        mockMvc.perform(get("/api/categories/999")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
     }
 
     @Test
@@ -128,6 +143,36 @@ public class CategoryControllerTest {
 
     @Test
     @WithMockUser(roles = {"ADMIN"})
+    void createCategory_MissingRequiredName_ReturnsBadRequest() throws Exception {
+        CategoryDto invalidCategory = new CategoryDto(
+                null,
+                null,
+                null);
+        String json = objectMapper.writeValueAsString(invalidCategory);
+
+        MvcResult result = mockMvc.perform(post("/api/categories")
+                        .content(json)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andReturn();
+
+        String response = result.getResponse().getContentAsString();
+        assertThat(response).contains("Name must not be blank");
+    }
+
+    @Test
+    @WithMockUser(roles = {"USER"})
+    void createCategory_AsUser_ReturnsForbidden() throws Exception {
+        String json = objectMapper.writeValueAsString(createCategoryDto());
+
+        mockMvc.perform(post("/api/categories")
+                        .content(json)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockUser(roles = {"ADMIN"})
     void updateCategory_ReturnsUpdatedCategory() throws Exception {
         CategoryDto updateDto = createCategoryDto();
         String updateJson = objectMapper.writeValueAsString(updateDto);
@@ -146,10 +191,29 @@ public class CategoryControllerTest {
 
     @Test
     @WithMockUser(roles = {"ADMIN"})
+    void updateCategory_NonExistentId_ReturnsNotFound() throws Exception {
+        String json = objectMapper.writeValueAsString(createCategoryDto());
+
+        mockMvc.perform(put("/api/categories/999")
+                        .content(json)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @WithMockUser(roles = {"ADMIN"})
     void deleteCategory_ReturnsOk() throws Exception {
         mockMvc.perform(delete("/api/categories/2")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(roles = {"ADMIN"})
+    void deleteCategory_NonExistentId_ReturnsNotFound() throws Exception {
+        mockMvc.perform(delete("/api/categories/999")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
     }
 
     @Test

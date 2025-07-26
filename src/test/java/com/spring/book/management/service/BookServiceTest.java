@@ -175,9 +175,13 @@ class BookServiceTest {
     @Test
     @DisplayName("Deletes a book with the given ID")
     void deleteBook_ValidId_CallsRepositoryDeleteById() {
-        bookService.deleteBook(1L);
+        Long bookId = 1L;
+        when(bookRepository.existsById(bookId)).thenReturn(true);
 
-        verify(bookRepository).deleteById(1L);
+        bookService.deleteBook(bookId);
+
+        verify(bookRepository).existsById(bookId);
+        verify(bookRepository).deleteById(bookId);
     }
 
     @Test
