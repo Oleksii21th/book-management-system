@@ -39,7 +39,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public CategoryDto getById(Long id) {
+    public CategoryDto findById(Long id) {
         return categoryMapper.toDto(
                 categoryRepository.findById(id)
                         .orElseThrow(CategoryNotFoundException::new));
@@ -61,6 +61,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void deleteById(Long id) {
+        if (!categoryRepository.existsById(id)) {
+            throw new CategoryNotFoundException(id);
+        }
         categoryRepository.deleteById(id);
     }
 

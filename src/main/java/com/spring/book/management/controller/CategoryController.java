@@ -34,14 +34,14 @@ public class CategoryController {
 
     @GetMapping
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
-    public List<CategoryDto> getAll() {
+    public List<CategoryDto> findAll() {
         return categoryService.findAll();
     }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
-    public CategoryDto getById(@PathVariable Long id) {
-        return categoryService.getById(id);
+    public CategoryDto findById(@PathVariable Long id) {
+        return categoryService.findById(id);
     }
 
     @PutMapping("/{id}")

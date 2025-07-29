@@ -41,13 +41,7 @@ public class BookServiceImpl implements BookService {
 
     public BookDto save(CreateBookRequestDto dto) {
         Book book = bookMapper.toModel(dto);
-
-        if (dto.getCategoryIds() != null && !dto.getCategoryIds().isEmpty()) {
-            Set<Category> categories =
-                    new HashSet<>(categoryRepository.findAllById(dto.getCategoryIds()));
-            book.setCategories(categories);
-        }
-
+        setBookCategories(book, dto.getCategoryIds());
         Book savedBook = bookRepository.save(book);
         return bookMapper.toDto(savedBook);
     }
@@ -76,18 +70,16 @@ public class BookServiceImpl implements BookService {
                 .orElseThrow(() -> new BookNotFoundException("Book not found"));
         bookMapper.toEntity(dto, book);
 
-        if (dto.getCategoryIds() != null) {
-            Set<Category> categories =
-                    new HashSet<>(categoryRepository.findAllById(dto.getCategoryIds()));
-            book.setCategories(categories);
-        }
-
+        setBookCategories(book, dto.getCategoryIds());
         Book updatedBook = bookRepository.save(book);
         return bookMapper.toDto(updatedBook);
     }
 
     @Override
     public void deleteBook(Long id) {
+        if (!bookRepository.existsById(id)) {
+            throw new BookNotFoundException("Book not found with id: " + id);
+        }
         bookRepository.deleteById(id);
     }
 
@@ -99,5 +91,12 @@ public class BookServiceImpl implements BookService {
                 .stream()
                 .map(bookMapper::toDto)
                 .toList();
+    }
+
+    private void setBookCategories(Book book, Set<Long> categoryIds) {
+        if (categoryIds != null && !categoryIds.isEmpty()) {
+            Set<Category> categories = new HashSet<>(categoryRepository.findAllById(categoryIds));
+            book.setCategories(categories);
+        }
     }
 }
