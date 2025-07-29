@@ -72,7 +72,7 @@ class ShoppingCartServiceTest {
 
         cartItem = new CartItem(shoppingCart, book, 2);
 
-       cartItemResponseDto = new CartItemResponseDto(
+        cartItemResponseDto = new CartItemResponseDto(
                 1L,
                 1L,
                 "Test",
@@ -130,9 +130,6 @@ class ShoppingCartServiceTest {
     @Test
     @DisplayName("Adds a new item to an empty cart")
     void addToCart_NewItem_AddsItem() {
-        AddToCartRequestDto dto = new AddToCartRequestDto(book.getId(), 1);
-        shoppingCart.setCartItems(new HashSet<>());
-
         when(userService.getCurrentUser()).thenReturn(user);
         when(shoppingCartRepository.findByUser(user))
                 .thenReturn(Optional.of(shoppingCart));
@@ -142,6 +139,10 @@ class ShoppingCartServiceTest {
                 .thenReturn(shoppingCart);
         when(cartMapper.toDto(shoppingCart))
                 .thenReturn(shoppingCartResponseDto);
+
+        shoppingCart.setCartItems(new HashSet<>());
+
+        AddToCartRequestDto dto = new AddToCartRequestDto(book.getId(), 1);
 
         ShoppingCartResponseDto result =
                 shoppingCartService.addToCart(dto);
@@ -154,8 +155,6 @@ class ShoppingCartServiceTest {
     @Test
     @DisplayName("Increases quantity if item already exists in the cart")
     void addToCart_ExistingItem_IncrementsQuantity() {
-        AddToCartRequestDto dto = new AddToCartRequestDto(book.getId(), 3);
-
         when(userService.getCurrentUser()).thenReturn(user);
         when(shoppingCartRepository.findByUser(user))
                 .thenReturn(Optional.of(shoppingCart));
@@ -166,6 +165,8 @@ class ShoppingCartServiceTest {
         when(cartMapper.toDto(shoppingCart))
                 .thenReturn(shoppingCartResponseDto);
 
+        AddToCartRequestDto dto = new AddToCartRequestDto(book.getId(), 3);
+
         shoppingCartService.addToCart(dto);
 
         assertThat(cartItem.getQuantity()).isEqualTo(5);
@@ -175,11 +176,11 @@ class ShoppingCartServiceTest {
     @Test
     @DisplayName("Throws BookNotFoundException when the book is not found")
     void addToCart_BookNotFound_ThrowsException() {
-        AddToCartRequestDto dto = new AddToCartRequestDto(999L, 1);
-
         when(userService.getCurrentUser()).thenReturn(user);
         when(shoppingCartRepository.findByUser(user)).thenReturn(Optional.of(shoppingCart));
         when(bookRepository.findById(999L)).thenReturn(Optional.empty());
+
+        AddToCartRequestDto dto = new AddToCartRequestDto(999L, 1);
 
         assertThrows(BookNotFoundException.class,
                 () -> shoppingCartService.addToCart(dto));
