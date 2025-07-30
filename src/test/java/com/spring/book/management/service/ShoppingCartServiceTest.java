@@ -55,7 +55,6 @@ class ShoppingCartServiceTest {
     private Book book;
     private User user;
     private CartItem cartItem;
-    private CartItemResponseDto cartItemResponseDto;
     private ShoppingCart shoppingCart;
     private ShoppingCartResponseDto shoppingCartResponseDto;
 
@@ -72,7 +71,7 @@ class ShoppingCartServiceTest {
 
         cartItem = new CartItem(shoppingCart, book, 2);
 
-        cartItemResponseDto = new CartItemResponseDto(
+        CartItemResponseDto cartItemResponseDto = new CartItemResponseDto(
                 1L,
                 1L,
                 "Test",
