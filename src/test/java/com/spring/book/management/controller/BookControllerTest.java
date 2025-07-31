@@ -13,7 +13,6 @@ import com.spring.book.management.dto.book.BookDto;
 import com.spring.book.management.dto.book.CreateBookRequestDto;
 import java.math.BigDecimal;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Set;
 import javax.sql.DataSource;
@@ -43,35 +42,33 @@ class BookControllerTest {
         mockMvc = org.springframework.test.web.servlet.setup.MockMvcBuilders
                 .webAppContextSetup(context)
                 .apply(org.springframework.security.test.web.servlet.setup
-                                .SecurityMockMvcConfigurers.springSecurity())
+                        .SecurityMockMvcConfigurers.springSecurity())
                 .build();
     }
 
     @BeforeEach
     void setupDatabase(@Autowired DataSource dataSource) {
-        try (Connection connection = dataSource.getConnection()) {
-            connection.setAutoCommit(true);
-            ScriptUtils.executeSqlScript(connection,
-                    new ClassPathResource("database/book/remove-all-books.sql"));
-            ScriptUtils.executeSqlScript(connection,
-                    new ClassPathResource("database/book/add-default-books.sql"));
-        } catch (SQLException exception) {
-            throw new RuntimeException("Failed to tear down database", exception);
-        }
+        executeSqlScripts(dataSource,
+                "database/book/remove-all-books.sql",
+                "database/book/add-default-books.sql"
+        );
     }
 
     @AfterAll
     static void afterAll(@Autowired DataSource dataSource) {
-        tearDown(dataSource);
+        executeSqlScripts(dataSource,
+                "database/book/remove-all-books.sql"
+        );
     }
 
-    static void tearDown(DataSource dataSource) {
+    private static void executeSqlScripts(DataSource dataSource, String... scriptPaths) {
         try (Connection connection = dataSource.getConnection()) {
             connection.setAutoCommit(true);
-            ScriptUtils.executeSqlScript(connection,
-                    new ClassPathResource("database/book/remove-all-books.sql"));
-        } catch (SQLException exception) {
-            throw new RuntimeException("Failed to tear down database", exception);
+            for (String path : scriptPaths) {
+                ScriptUtils.executeSqlScript(connection, new ClassPathResource(path));
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to execute SQL script(s)", e);
         }
     }
 
@@ -249,7 +246,8 @@ class BookControllerTest {
 
         List<BookDto> books = objectMapper.readValue(
                 result.getResponse().getContentAsString(),
-                new TypeReference<>() {}
+                new TypeReference<>() {
+                }
         );
 
         assertThat(books).isNotEmpty();

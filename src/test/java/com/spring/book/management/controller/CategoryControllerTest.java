@@ -13,7 +13,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spring.book.management.dto.CategoryDto;
 import com.spring.book.management.dto.book.BookDtoWithoutCategoryIds;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 import javax.sql.DataSource;
 import org.junit.jupiter.api.AfterAll;
@@ -43,35 +42,30 @@ public class CategoryControllerTest {
                 .webAppContextSetup(context)
                 .apply(springSecurity())
                 .build();
-        try (Connection connection = dataSource.getConnection()) {
-            connection.setAutoCommit(true);
-            ScriptUtils.executeSqlScript(connection,
-                    new ClassPathResource("database/book/add-default-books.sql"));
-            ScriptUtils.executeSqlScript(connection,
-                    new ClassPathResource("database/category/"
-                            + "add-default-categories-and-combined-with-book.sql"));
-        } catch (SQLException exception) {
-            throw new RuntimeException("Failed adding categories to database", exception);
-        }
+
+        executeSqlScripts(dataSource,
+                "database/book/add-default-books.sql",
+                "database/category/add-default-categories-and-combined-with-book.sql"
+        );
     }
 
     @AfterAll
-    static void afterAll(@Autowired DataSource dataSource) {
-        tearDown(dataSource);
+    static void tearDown(@Autowired DataSource dataSource) {
+        executeSqlScripts(dataSource,
+                "database/category/remove-combined-book-and-category.sql",
+                "database/book/remove-all-books.sql",
+                "database/category/remove-all-category.sql"
+        );
     }
 
-    static void tearDown(DataSource dataSource) {
+    private static void executeSqlScripts(DataSource dataSource, String... scriptPaths) {
         try (Connection connection = dataSource.getConnection()) {
             connection.setAutoCommit(true);
-            ScriptUtils.executeSqlScript(connection,
-                    new ClassPathResource(
-                            "database/category/remove-combined-book-and-category.sql"));
-            ScriptUtils.executeSqlScript(connection,
-                    new ClassPathResource("database/book/remove-all-books.sql"));
-            ScriptUtils.executeSqlScript(connection,
-                    new ClassPathResource("database/category/remove-all-category.sql"));
-        } catch (SQLException exception) {
-            throw new RuntimeException("Failed to tear down database", exception);
+            for (String path : scriptPaths) {
+                ScriptUtils.executeSqlScript(connection, new ClassPathResource(path));
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to execute SQL scripts", e);
         }
     }
 
