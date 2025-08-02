@@ -83,13 +83,13 @@ src/
 | GET | `/api/books/search` | Search books | Admin/User |
 
 #### `CategoryController`
-| Method | Endpoint | Description | Access |
-|--------|----------|-------------|--------|
-| POST | `/api/categories` | Add new category | Admin |
-| PUT | `/api/categories` | Update category | Admin |
-| GET | `/api/categories` | Get all categories | Admin/User |
-| GET | `/api/categories/{id}` | Get category by ID | Admin/User |
-| DELETE | `/api/categories/{id}` | Delete category | Admin |
+| Method | Endpoint                     | Description | Access |
+|--------|------------------------------|-------------|--------|
+| POST | `/api/categories`            | Add new category | Admin |
+| PUT | `/api/categories/{id}`        | Update category | Admin |
+| GET | `/api/categories`            | Get all categories | Admin/User |
+| GET | `/api/categories/{id}`       | Get category by ID | Admin/User |
+| DELETE | `/api/categories/{id}`       | Delete category | Admin |
 | GET | `/api/categories/{id}/books` | Books by category | Admin/User |
 
 #### `OrderController`
@@ -98,16 +98,15 @@ src/
 | POST | `/api/orders` | Create new order | User |
 | GET | `/api/orders` | Get user's order history | User |
 | PATCH | `/api/orders/{id}` | Update order status | Admin |
-| GET | `/api/orders/{orderId}/items` | Get order items | User |
-| GET | `/api/orders/{orderId}/items/{itemId}` | Get specific order item | User |
+| GET | `/api/orders/{orderId}` | Get order items | User |
 
 #### `ShoppingCartController`
-| Method | Endpoint | Description | Access |
-|--------|----------|-------------|--------|
-| GET | `/api/cart` | Get shopping cart | User |
-| POST | `/api/cart` | Add/update book in cart | User |
-| PUT | `/api/cart/cart-items/{cartItemId}` | Update book quantity | User |
-| DELETE | `/api/cart/cart-items/{cartItemId}` | Remove book from cart | User |
+| Method | Endpoint                    | Description | Access |
+|--------|-----------------------------|-------------|--------|
+| GET | `/api/cart`                 | Get shopping cart | User |
+| POST | `/api/cart`                 | Add book in cart | User |
+| PUT | `/api/cart/cart-items/{id}` | Update book quantity | User |
+| DELETE | `/api/cart/cart-items/{id}` | Remove book from cart | User |
 
 ---
 
