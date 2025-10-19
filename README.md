@@ -17,6 +17,18 @@
 **Book Management** is a stateless RESTful application with JWT-based authentication and user registration.  
 It provides a platform for both **administrators** and **customers** to manage books, categories, orders, and shopping carts.
 
+### Why This Project Was Created
+
+This project was built to simulate the core functionality of a real-world e-commerce system and is suitable for use as:
+- A production-ready backend template for small to medium online stores
+- A reference architecture for building secure Java-based REST APIs using Spring Boot
+
+Key business and technical motivations include:
+- **End-to-End Functionality**: From user registration and authentication to order processing and cart management, the app mimics a complete e-commerce flow.
+- **Scalability in Mind**: The data model and service design allow for easy expansion.
+- **Security First**: Built with modern authentication techniques including JWT access and refresh tokens, role-based authorization, and secure token handling.
+- **Modern Development Stack**: Integrates tools widely used in professional environments — like Docker, Liquibase, Swagger (OpenAPI), and MapStruct.
+
 The application is built following **SOLID principles** and adopts a **Three-Tier Architecture**:
 1. **Presentation Layer** – Controllers for handling client requests
 2. **Business Logic Layer** – Services implementing application logic
@@ -33,18 +45,17 @@ The application is built following **SOLID principles** and adopts a **Three-Tie
     - Spring Data JPA
 - **Hibernate** `6.5.3.Final`
 - **MySQL** `8.0.33`
-- **Lombok**
 - **MapStruct**
 - **Liquibase**
-- **Swagger (SpringDoc)**
-- **Docker & Docker Compose**
-- **JWT (JJWT library)**
+- **Swagger**
+- **Docker**
+- **JSON Web Token**
 
 ---
 
 ## Data Models & Relationships
 
-![book-management.png](images/book-management.png)]
+![book-management.png](images/book-management.png)
 
 ---
 
@@ -153,7 +164,7 @@ After launching the application, visit the Swagger UI for API reference:
 ---
 
 ## Postman Collection
-https://www.postman.com/redbul-7208203/my-workspace
+https://www.postman.com/oleksii-7208203/my-workspace/overview
 A Postman collection is available to streamline API testing.
 
 > To test as a regular user:
@@ -168,8 +179,26 @@ A Postman collection is available to streamline API testing.
 
 ---
 
+## Challenges & Solutions
+
+Throughout the development of this project, several real-world technical challenges arose. Here are a few notable ones and how they were addressed:
+
+### Implementing Secure JWT Token Refresh Logic
+**Challenge**: Handling expired access tokens while maintaining stateless authentication.  
+**Solution**: Introduced a refresh token mechanism with secure HTTP-only cookies and token blacklisting to balance statelessness with security.
+
+### Designing a Scalable Database Schema
+**Challenge**: Modeling flexible relationships between books and categories (e.g., one book can belong to multiple categories).  
+**Solution**: Used a many-to-many relationship with a join table, ensuring efficient querying and scalability as the catalog grows.
+
+### Docker Compose Service Dependencies
+**Challenge**: Initial application startup failed due to timing issues between Spring Boot and MySQL containers.  
+**Solution**: Configured a `depends_on` clause and added a custom health check or wait-for-it script to ensure the database is fully ready before Spring Boot attempts a connection.
+
+---
+
 ## Contact
 
 **Developer**: Oleksii Babych
-**Email**:   
+**Email**:   obabych1@stu.vistula.edu.pl
 **GitHub**: https://github.com/Oleksii21th/book-management-system
