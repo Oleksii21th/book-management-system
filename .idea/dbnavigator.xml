@@ -1,10 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DBNavigator.Project.DDLFileAttachmentManager">
+    <mappings />
+    <preferences />
+  </component>
+  <component name="DBNavigator.Project.DataEditorManager">
+    <record-view-column-sorting-type value="BY_INDEX" />
+    <value-preview-text-wrapping value="false" />
+    <value-preview-pinned value="false" />
+  </component>
+  <component name="DBNavigator.Project.DatabaseAssistantManager">
+    <assistants>
+      <assistant-state connection-id="35e79ca9-c8de-464c-adc8-6b73862daf91" default-profile-name="" selected-profile-name="" selected-model-name="" assistant-type="GENERIC" selected-action="SHOW_SQL" availability="UNAVAILABLE" acknowledgement="NONE">
+        <messages />
+      </assistant-state>
+      <assistant-state connection-id="7c33f46c-05bc-4758-a7d8-82dbaf34c627" default-profile-name="" selected-profile-name="" selected-model-name="" assistant-type="GENERIC" selected-action="SHOW_SQL" availability="UNAVAILABLE" acknowledgement="NONE">
+        <messages />
+      </assistant-state>
+      <assistant-state connection-id="91fb8ae2-ac15-438f-877a-1a2faa212de1" default-profile-name="" selected-profile-name="" selected-model-name="" assistant-type="GENERIC" selected-action="SHOW_SQL" availability="UNAVAILABLE" acknowledgement="NONE">
+        <messages />
+      </assistant-state>
+    </assistants>
+  </component>
   <component name="DBNavigator.Project.DatabaseBrowserManager">
     <autoscroll-to-editor value="false" />
     <autoscroll-from-editor value="true" />
     <show-object-properties value="true" />
     <loaded-nodes />
+  </component>
+  <component name="DBNavigator.Project.DatabaseEditorStateManager">
+    <last-used-providers />
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
     <open-files />
@@ -42,9 +67,15 @@
           <object-type name="TYPE" enabled="true" />
           <object-type name="TYPE_ATTRIBUTE" enabled="true" />
           <object-type name="ARGUMENT" enabled="true" />
+          <object-type name="JAVA_CLASS" enabled="true" />
+          <object-type name="JAVA_INNER_CLASS" enabled="true" />
+          <object-type name="JAVA_FIELD" enabled="true" />
+          <object-type name="JAVA_METHOD" enabled="true" />
           <object-type name="DIMENSION" enabled="true" />
           <object-type name="CLUSTER" enabled="true" />
           <object-type name="DBLINK" enabled="true" />
+          <object-type name="CREDENTIAL" enabled="true" />
+          <object-type name="AI_PROFILE" enabled="true" />
         </object-type-filter>
       </filters>
       <sorting>
@@ -81,9 +112,15 @@
           <object-type name="FUNCTION" enabled="true" />
           <object-type name="PACKAGE" enabled="true" />
           <object-type name="TYPE" enabled="true" />
+          <object-type name="JAVA CLASS" enabled="true" />
+          <object-type name="INNER CLASS" enabled="true" />
+          <object-type name="JAVA FIELD" enabled="true" />
+          <object-type name="JAVA METHOD" enabled="true" />
+          <object-type name="JAVA PARAMETER" enabled="true" />
           <object-type name="DIMENSION" enabled="false" />
           <object-type name="CLUSTER" enabled="false" />
           <object-type name="DBLINK" enabled="true" />
+          <object-type name="CREDENTIAL" enabled="false" />
         </lookup-objects>
         <force-database-load value="false" />
         <prompt-connection-selection value="true" />
@@ -143,7 +180,6 @@
           <content-type name="JSON" enabled="true" />
           <content-type name="JSON5" enabled="true" />
           <content-type name="Groovy" enabled="true" />
-          <content-type name="AIDL" enabled="true" />
           <content-type name="YAML" enabled="true" />
           <content-type name="Manifest" enabled="true" />
         </content-types>
@@ -374,6 +410,7 @@
         <mapping file-type-id="TYPE" extensions="tpe" />
         <mapping file-type-id="TYPE_SPEC" extensions="tps" />
         <mapping file-type-id="TYPE_BODY" extensions="tpb" />
+        <mapping file-type-id="JAVA_SOURCE" extensions="sql" />
       </extensions>
       <general>
         <lookup-ddl-files value="true" />
@@ -383,6 +420,11 @@
         <make-scripts-rerunnable value="true" />
       </general>
     </ddl-file-settings>
+    <assistant-settings>
+      <credential-settings>
+        <credentials />
+      </credential-settings>
+    </assistant-settings>
     <general-settings>
       <regional-settings>
         <date-format value="MEDIUM" />
