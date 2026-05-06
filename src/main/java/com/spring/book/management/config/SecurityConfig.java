@@ -33,9 +33,7 @@ public class SecurityConfig {
                                         "/swagger-ui.html",
                                         "/v3/api-docs/**",
                                         "/v3/api-docs.yaml",
-                                        "/swagger-resources/**",
-                                        "/webjars/**")
-                                .permitAll()
+                                        "/swagger-resources/**").permitAll()
                                 .requestMatchers("/api/auth/registration",
                                         "/api/auth/login").permitAll()
                                 .requestMatchers(HttpMethod.GET,
