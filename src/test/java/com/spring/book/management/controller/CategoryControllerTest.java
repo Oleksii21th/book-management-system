@@ -86,10 +86,10 @@ public class CategoryControllerTest {
     }
 
     @Test
-    void findAllCategories_Unauthenticated_ReturnsUnauthorized() throws Exception {
+    void findAllCategories_Unauthenticated_ReturnsForbidden() throws Exception {
         mockMvc.perform(get("/api/categories")
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isForbidden());
     }
 
     @Test
