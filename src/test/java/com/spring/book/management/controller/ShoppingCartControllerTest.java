@@ -87,10 +87,10 @@ public class ShoppingCartControllerTest {
     }
 
     @Test
-    void getCart_Unauthenticated_ReturnsUnauthorized() throws Exception {
+    void getCart_Unauthenticated_ReturnsForbidden() throws Exception {
         mockMvc.perform(get("/api/cart")
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isForbidden());
     }
 
     @Test

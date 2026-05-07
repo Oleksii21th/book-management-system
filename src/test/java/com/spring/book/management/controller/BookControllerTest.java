@@ -89,10 +89,10 @@ class BookControllerTest {
     }
 
     @Test
-    void findAllBooks_Unauthenticated_ReturnsUnauthorized() throws Exception {
+    void findAllBooks_Unauthenticated_ReturnsForbidden() throws Exception {
         mockMvc.perform(get("/api/books")
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isForbidden());
     }
 
     @Test

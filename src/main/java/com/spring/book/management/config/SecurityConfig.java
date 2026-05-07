@@ -3,10 +3,9 @@ package com.spring.book.management.config;
 import com.spring.book.management.security.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -17,6 +16,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
@@ -31,33 +31,14 @@ public class SecurityConfig {
                         authorizeRequests
                                 .requestMatchers("/swagger-ui/**",
                                         "/swagger-ui.html",
-                                        "/v3/api-docs/**",
-                                        "/swagger-resources/**",
-                                        "/webjars/**").permitAll()
+                                        "/v3/api-docs/**").permitAll()
                                 .requestMatchers("/api/auth/registration",
                                         "/api/auth/login").permitAll()
-                                .requestMatchers(HttpMethod.GET,
-                                        "/api/books/**", "/api/categories/**")
-                                .hasAnyRole("USER", "ADMIN")
-                                .requestMatchers(HttpMethod.POST,
-                                        "/api/books", "/api/categories").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.PUT,
-                                        "/api/books/**", "/api/categories/**").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.DELETE,
-                                        "/api/books/**", "/api/categories/**").hasRole("ADMIN")
-                                .requestMatchers("/api/cart/**")
-                                .hasAnyRole("USER", "ADMIN")
-                                .requestMatchers(HttpMethod.GET,
-                                        "/api/orders/**").hasAnyRole("USER", "ADMIN")
-                                .requestMatchers(HttpMethod.POST,
-                                        "/api/orders").hasAnyRole("USER", "ADMIN")
-                                .requestMatchers(HttpMethod.PATCH,
-                                        "/api/orders/**").hasRole("ADMIN")
                                 .anyRequest().authenticated())
                 .csrf(AbstractHttpConfigurer::disable)
                 .addFilterBefore(jwtAuthenticationFilter,
                         UsernamePasswordAuthenticationFilter.class)
-                .httpBasic(Customizer.withDefaults());
+                .httpBasic(AbstractHttpConfigurer::disable);
 
         return http.build();
     }
