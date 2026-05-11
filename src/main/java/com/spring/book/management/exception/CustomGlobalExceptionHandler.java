@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import javax.security.auth.login.LoginException;
+import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -54,6 +55,11 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
             ShoppingCartNotFoundException.class})
     public ResponseEntity<Object> handleNotFoundExceptions(RuntimeException ex) {
         return buildErrorResponse(ex, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(PropertyReferenceException.class)
+    public ResponseEntity<Object> handlePropertyReference(PropertyReferenceException ex) {
+        return buildErrorResponse(ex, HttpStatus.BAD_REQUEST);
     }
 
     private String getErrorMessage(ObjectError objectError) {
