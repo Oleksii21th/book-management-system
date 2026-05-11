@@ -2,6 +2,11 @@ databaseChangeLog:
   - changeSet:
       id: "9"
       author: "Oleksii"
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            tableExists:
+              tableName: categories
       changes:
         - createTable:
             tableName: "categories"

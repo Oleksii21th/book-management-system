@@ -29,7 +29,7 @@ public class AuthenticationService {
             String token = jwtUtil.generateToken(authentication);
             return new UserLoginResponseDto(token);
         } catch (BadCredentialsException ex) {
-            throw new LoginException("Nieprawidłowy login lub hasło");
+            throw new LoginException("Incorrect login or password");
         }
     }
 }
