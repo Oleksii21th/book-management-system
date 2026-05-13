@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long>, JpaSpecificationExecutor<Book> {
     List<Book> findByCategories_Id(Long categoryId);
+
+    boolean existsByIsbn(String isbn);
 }

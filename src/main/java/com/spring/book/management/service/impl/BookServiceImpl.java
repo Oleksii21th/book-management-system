@@ -4,6 +4,7 @@ import com.spring.book.management.dto.book.BookDto;
 import com.spring.book.management.dto.book.BookSearchParametersDto;
 import com.spring.book.management.dto.book.CreateBookRequestDto;
 import com.spring.book.management.exception.BookNotFoundException;
+import com.spring.book.management.exception.DuplicateIsbnException;
 import com.spring.book.management.mapper.BookMapper;
 import com.spring.book.management.model.Book;
 import com.spring.book.management.model.Category;
@@ -40,10 +41,18 @@ public class BookServiceImpl implements BookService {
     }
 
     public BookDto save(CreateBookRequestDto dto) {
+        validateIsbn(dto.getIsbn());
+
         Book book = bookMapper.toModel(dto);
         setBookCategories(book, dto.getCategoryIds());
         Book savedBook = bookRepository.save(book);
         return bookMapper.toDto(savedBook);
+    }
+
+    private void validateIsbn(String isbn) {
+        if (bookRepository.existsByIsbn(isbn)) {
+            throw new DuplicateIsbnException("ISBN already exists");
+        }
     }
 
     @Override
@@ -68,6 +77,12 @@ public class BookServiceImpl implements BookService {
     public BookDto updateBook(Long id, CreateBookRequestDto dto) {
         Book book = bookRepository.findById(id)
                 .orElseThrow(() -> new BookNotFoundException("Book not found"));
+
+        if (!book.getIsbn().equals(dto.getIsbn())
+                && bookRepository.existsByIsbn(dto.getIsbn())) {
+            throw new DuplicateIsbnException("ISBN already exists");
+        }
+
         bookMapper.toEntity(dto, book);
 
         setBookCategories(book, dto.getCategoryIds());
